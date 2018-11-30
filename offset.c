@@ -11,8 +11,11 @@ int dc_target_get_offset_x()
 	// Get instance.
 	instance = dc_target_get_instance();
 
+	// Get current value.
 	result = getlocalvar(instance + DC_TARGET_VAR_KEY_OFFSET_X);
 
+	// If the value is blank or wrong type,
+	// use default instead.
 	if (typeof(result) != openborconstant("VT_INTEGER"))
 	{
 		result = DC_TARGET_DEFAULT_OFFSET_X;
@@ -28,7 +31,13 @@ int dc_target_set_offset_x(int value)
 	// Get instance.
 	instance = dc_target_get_instance();
 
-	setlocalvar(instance + DC_TARGET_VAR_KEY_OFFSET_X, value);
+	// Only set the value if new value
+	// is different from default. No reason 
+	// to waste the memory on a default value.
+	if (value != DC_TARGET_DEFAULT_OFFSET_X)
+	{
+		setlocalvar(instance + DC_TARGET_VAR_KEY_OFFSET_X, value);
+	}	
 }
 
 // Y axis offset.
@@ -40,8 +49,11 @@ int dc_target_get_offset_y()
 	// Get instance.
 	instance = dc_target_get_instance();
 
+	// Get current value.
 	result = getlocalvar(instance + DC_TARGET_VAR_KEY_OFFSET_Y);
 
+	// If the value is blank or wrong type,
+	// use default instead.
 	if (typeof(result) != openborconstant("VT_INTEGER"))
 	{
 		result = DC_TARGET_DEFAULT_OFFSET_Y;
@@ -57,7 +69,13 @@ int dc_target_set_offset_y(int value)
 	// Get instance.
 	instance = dc_target_get_instance();
 
-	setlocalvar(instance + DC_TARGET_VAR_KEY_OFFSET_Y, value);
+	// Only set the value if new value
+	// is different from default. No reason 
+	// to waste the memory on a default value.
+	if (value != DC_TARGET_DEFAULT_OFFSET_Y)
+	{
+		setlocalvar(instance + DC_TARGET_VAR_KEY_OFFSET_Y, value);
+	}
 }
 
 // Z axis offset.
@@ -69,8 +87,11 @@ int dc_target_get_offset_z()
 	// Get instance.
 	instance = dc_target_get_instance();
 
+	// Get current value.
 	result = getlocalvar(instance + DC_TARGET_VAR_KEY_OFFSET_Z);
 
+	// If the value is blank or wrong type,
+	// use default instead.
 	if (typeof(result) != openborconstant("VT_INTEGER"))
 	{
 		result = DC_TARGET_DEFAULT_OFFSET_Z;
@@ -86,5 +107,11 @@ int dc_target_set_offset_z(int value)
 	// Get instance.
 	instance = dc_target_get_instance();
 
-	setlocalvar(instance + DC_TARGET_VAR_KEY_OFFSET_Z, value);
+	// Only set the value if new value
+	// is different from default. No reason 
+	// to waste the memory on a default value.
+	if (value != DC_TARGET_DEFAULT_OFFSET_Z)
+	{
+		setlocalvar(instance + DC_TARGET_VAR_KEY_OFFSET_Z, value);
+	}
 }
