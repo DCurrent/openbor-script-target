@@ -1,5 +1,9 @@
 #include "data/scripts/dc_target/config.h"
 
+#import "data/scripts/dc_target/animation.c"
+#import "data/scripts/dc_target/entity.c"
+#import "data/scripts/dc_target/offset.c"
+
 // Caskey, Damon V.
 // 2018-11-29 (breakdown of orginal from 2017-03-18)
 //
@@ -12,12 +16,15 @@ void dc_target_check_position_in_range_x()
 	int range_max;		// Maximum range.
 	float pos_current;	// Current entity position.
 	int pos_target;		// Position to varify is in range.
+	int animation;		// Animation to use.
 
 	// Get action ent and position.
 	ent = dc_target_get_entity();
 	pos_current = getentityproperty(ent, "x");
 
-	// Verify animation provided is valid.
+	// Get animation and verify entity has it.
+	animation = dc_target_get_animation();
+
 	if (!getentityproperty(ent, "animvalid", animation))
 	{
 		return 0;
