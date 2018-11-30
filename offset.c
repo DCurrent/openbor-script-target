@@ -24,33 +24,40 @@ int dc_target_get_offset_x()
 	return result;
 }
 
-int dc_target_set_offset_x(int value)
+void dc_target_set_offset_x(int value)
 {
-	int instance;
+	char id;
 
-	// Get instance.
-	instance = dc_target_get_instance();
+	// Concatenate instance with var key
+	// to get a finished variable id.
+	id = dc_target_get_instance() + DC_TARGET_DEFAULT_OFFSET_X;
 
-	// Only set the value if new value
-	// is different from default. No reason 
-	// to waste the memory on a default value.
-	if (value != DC_TARGET_DEFAULT_OFFSET_X)
+	// If the value we intend to set is
+	// same as default, then just make sure
+	// the variable is deleted instead. No
+	// reason to waste memory on default values.
+	if (value == DC_TARGET_DEFAULT_OFFSET_X)
 	{
-		setlocalvar(instance + DC_TARGET_VAR_KEY_OFFSET_X, value);
+		value = NULL();
 	}	
+	
+	// Apply value to a local var with
+	// our concatenated id.
+	setlocalvar(id, value);	
 }
 
 // Y axis offset.
 int dc_target_get_offset_y()
 {
-	int instance;
+	int id;
 	int result;
 
-	// Get instance.
-	instance = dc_target_get_instance();
+	// Concatenate instance with var key
+	// to get a finished variable id.
+	id = dc_target_get_instance() + DC_TARGET_DEFAULT_OFFSET_X;
 
 	// Get current value.
-	result = getlocalvar(instance + DC_TARGET_VAR_KEY_OFFSET_Y);
+	result = getlocalvar(id);
 
 	// If the value is blank or wrong type,
 	// use default instead.
@@ -62,20 +69,26 @@ int dc_target_get_offset_y()
 	return result;
 }
 
-int dc_target_set_offset_y(int value)
+void dc_target_set_offset_y(int value)
 {
-	int instance;
+	char id;
 
-	// Get instance.
-	instance = dc_target_get_instance();
+	// Concatenate instance with var key
+	// to get a finished variable id.
+	id = dc_target_get_instance() + DC_TARGET_DEFAULT_OFFSET_Y;
 
-	// Only set the value if new value
-	// is different from default. No reason 
-	// to waste the memory on a default value.
-	if (value != DC_TARGET_DEFAULT_OFFSET_Y)
+	// If the value we intend to set is
+	// same as default, then just make sure
+	// the variable is deleted instead. No
+	// reason to waste memory on default values.
+	if (value == DC_TARGET_DEFAULT_OFFSET_Y)
 	{
-		setlocalvar(instance + DC_TARGET_VAR_KEY_OFFSET_Y, value);
+		value = NULL();
 	}
+
+	// Apply value to a local var with
+	// our concatenated id.
+	setlocalvar(id, value);
 }
 
 // Z axis offset.
@@ -100,18 +113,24 @@ int dc_target_get_offset_z()
 	return result;
 }
 
-int dc_target_set_offset_z(int value)
+void dc_target_set_offset_x(int value)
 {
-	int instance;
+	char id;
 
-	// Get instance.
-	instance = dc_target_get_instance();
+	// Concatenate instance with var key
+	// to get a finished variable id.
+	id = dc_target_get_instance() + DC_TARGET_DEFAULT_OFFSET_Z;
 
-	// Only set the value if new value
-	// is different from default. No reason 
-	// to waste the memory on a default value.
-	if (value != DC_TARGET_DEFAULT_OFFSET_Z)
+	// If the value we intend to set is
+	// same as default, then just make sure
+	// the variable is deleted instead. No
+	// reason to waste memory on default values.
+	if (value == DC_TARGET_DEFAULT_OFFSET_Z)
 	{
-		setlocalvar(instance + DC_TARGET_VAR_KEY_OFFSET_Z, value);
+		value = NULL();
 	}
+
+	// Apply value to a local var with
+	// our concatenated id.
+	setlocalvar(id, value);
 }
