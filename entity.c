@@ -11,8 +11,11 @@ void dc_target_get_entity()
 	// Get instance.
 	instance = dc_target_get_instance();
 
+	// Get current value.
 	result = getlocalvar(instance + DC_TARGET_VAR_KEY_ENT);
 
+	// If the value is blank or wrong type,
+	// use default instead.
 	if (typeof(result) != openborconstant("VT_PTR"))
 	{
 		result = DC_TARGET_DEFAULT_ENT;
