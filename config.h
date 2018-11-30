@@ -17,6 +17,6 @@
 #define DC_TARGET_VAR_KEY_OFFSET_X	DC_TARGET_VAR_KEY_BASE_ID + 3
 #define DC_TARGET_VAR_KEY_OFFSET_Y	DC_TARGET_VAR_KEY_BASE_ID + 4
 #define DC_TARGET_VAR_KEY_OFFSET_Z	DC_TARGET_VAR_KEY_BASE_ID + 5
-#define DC_TAREGT_VAR_KEY_THE_END	6			// Should always last, with a value one higher than previous key ID.
+#define DC_TARGET_VAR_KEY_THE_END	6			// Should always last, with a value one higher than previous key ID.
 
 #endif // !DC_TARGET_CONFIG
