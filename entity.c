@@ -5,14 +5,15 @@
 // Acting entity.
 void dc_target_get_entity()
 {
-	int instance;
 	void result;
+	char id;
 
-	// Get instance.
-	instance = dc_target_get_instance();
+	// Concatenate instance with var key
+	// to get a finished variable id.
+	id = dc_target_get_instance() + DC_TARGET_VAR_KEY_ENT;
 
 	// Get current value.
-	result = getlocalvar(instance + DC_TARGET_VAR_KEY_ENT);
+	result = getlocalvar(id);
 
 	// If the value is blank or wrong type,
 	// use default instead.
@@ -21,22 +22,29 @@ void dc_target_get_entity()
 		result = DC_TARGET_DEFAULT_ENT;
 	}
 
+	// Return value.
 	return result;
 }
 
 void dc_target_set_entity(void value)
 {
-	int instance;
+	char id;
 	void result;
 
-	// Get instance.
-	instance = dc_target_get_instance();
+	// Concatenate instance with var key
+	// to get a finished variable id.
+	id = dc_target_get_instance() + DC_TARGET_VAR_KEY_ENT;
 
-	// Only set the value if new value
-	// is different from default. No reason 
-	// to waste the memory on a default value. 
-	if (value != DC_TARGET_DEFAULT_ENT)
+	// If the value we intend to set is
+	// same as default, then just make sure
+	// the variable is deleted instead. No
+	// reason to waste memory on default values.
+	if (value == DC_TARGET_DEFAULT_ENT)
 	{
-		setlocalvar(instance + DC_TARGET_VAR_KEY_ENT, value);
-	}	
+		value = NULL();
+	}
+
+	// Apply value to a local var with
+	// our concatenated id.
+	setlocalvar(id, value);
 }
