@@ -5,14 +5,15 @@
 // X axis offset.
 int dc_target_get_offset_x()
 {
-	int instance;
 	int result;
+	char id;
 
-	// Get instance.
-	instance = dc_target_get_instance();
+	// Concatenate instance with var key
+	// to get a finished variable id.
+	id = dc_target_get_instance() + DC_TARGET_DEFAULT_OFFSET_X;
 
 	// Get current value.
-	result = getlocalvar(instance + DC_TARGET_VAR_KEY_OFFSET_X);
+	result = getlocalvar(id);
 
 	// If the value is blank or wrong type,
 	// use default instead.
@@ -21,6 +22,7 @@ int dc_target_get_offset_x()
 		result = DC_TARGET_DEFAULT_OFFSET_X;
 	}
 
+	// Return value.
 	return result;
 }
 
@@ -49,12 +51,12 @@ void dc_target_set_offset_x(int value)
 // Y axis offset.
 int dc_target_get_offset_y()
 {
-	int id;
 	int result;
+	char id;
 
 	// Concatenate instance with var key
 	// to get a finished variable id.
-	id = dc_target_get_instance() + DC_TARGET_DEFAULT_OFFSET_X;
+	id = dc_target_get_instance() + DC_TARGET_DEFAULT_OFFSET_Y;
 
 	// Get current value.
 	result = getlocalvar(id);
@@ -66,6 +68,7 @@ int dc_target_get_offset_y()
 		result = DC_TARGET_DEFAULT_OFFSET_Y;
 	}
 
+	// Return value.
 	return result;
 }
 
@@ -94,14 +97,15 @@ void dc_target_set_offset_y(int value)
 // Z axis offset.
 int dc_target_get_offset_z()
 {
-	int instance;
 	int result;
+	char id;
 
-	// Get instance.
-	instance = dc_target_get_instance();
+	// Concatenate instance with var key
+	// to get a finished variable id.
+	id = dc_target_get_instance() + DC_TARGET_DEFAULT_OFFSET_Z;
 
 	// Get current value.
-	result = getlocalvar(instance + DC_TARGET_VAR_KEY_OFFSET_Z);
+	result = getlocalvar(id);
 
 	// If the value is blank or wrong type,
 	// use default instead.
@@ -110,10 +114,11 @@ int dc_target_get_offset_z()
 		result = DC_TARGET_DEFAULT_OFFSET_Z;
 	}
 
+	// Return value.
 	return result;
 }
 
-void dc_target_set_offset_x(int value)
+void dc_target_set_offset_z(int value)
 {
 	char id;
 
