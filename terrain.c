@@ -11,10 +11,6 @@ int dc_target_find_obstacle_x() {
 	int     result;			// Final result.
 	void	ent;			// Acting entity.
 	int		animation;		// Acting animation.
-	float   target_x;		// Position of entity on X axis.
-	float   target_y;		// Position of entity on Y axis.
-	float   target_z;		// Position of entity on Z axis.
-	int     target_h;		// Target's height setting.
 	void    target;			// Target entity pointer.
 	int     target_count;	// Target Entity count.
 	int     i;				// Loop cursor.
@@ -47,20 +43,9 @@ int dc_target_find_obstacle_x() {
 			continue;
 		}
 
-		// Get target location.
-		target_x = getentityproperty(target, "x");
-		target_y = getentityproperty(target, "y");
-		target_z = getentityproperty(target, "z");
-		target_h = getentityproperty(target, "height");
-
-		// Add height to target's Y position.
-		target_y += target_h;
-
 		// If the target falls out off any range, 
 		// it's not a valid target, so get out of 
 		// this loop iteration.
-
-		dc_target_set_offset_z(target_z);
 
 		if (!dc_target_check_position_in_range_z())
 		{
@@ -72,9 +57,7 @@ int dc_target_find_obstacle_x() {
 			continue;
 		}
 
-		dc_target_set_offset_y(target_y);
-
-		if (!dc_target_check_position_in_range_y())
+		if (!dc_target_check_range_target_y(target))
 		{
 			continue;
 		}
@@ -82,7 +65,7 @@ int dc_target_find_obstacle_x() {
 		// If we'e made it this far, we've found a valid
 		// target. Use the current target x position as
 		// a result and exit loop.
-		result = target_x;
+		result = getentityproperty(target, "x");
 		break;
 	}
 
