@@ -1,6 +1,9 @@
 #ifndef DC_TARGET_CONFIG
 #define DC_TARGET_CONFIG 1
 
+// Dependencies
+#include "data/scripts/dc_math/main.c"
+
 // Defaults
 #define DC_TARGET_DEFAULT_INSTANCE		0
 #define DC_TARGET_DEFAULT_ANIMATION		openborconstant("ANI_IDLE")
