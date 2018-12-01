@@ -81,7 +81,7 @@ int dc_target_check_range_target_x(void target)
 // animation range.
 //
 // Logic is more or less a copy of OpenBOR's own
-// check_range_target_x() function.
+// check_range_target_y() function.
 int dc_target_check_range_target_y(void target)
 {
 	void ent;
@@ -118,6 +118,61 @@ int dc_target_check_range_target_y(void target)
 	range_max = getentityproperty(ent, "range", "amin", animation);
 
 	// Subtract entity Y position from target position.
+	target_pos -= ent_pos;
+
+	// Return true if final target location is
+	// within range min and max.
+	return (target_pos >= range_min
+		&& target_pos <= range_max);
+}
+
+// Caskey, Damon V.
+// 2018-11-30
+//
+// Return true if:
+//
+// A) Acting entity has acing animation.
+// B) Target entity is within acting
+// animation range.
+//
+// Logic is more or less a copy of OpenBOR's own
+// check_range_target_z() function.
+int dc_target_check_range_target_z(void target)
+{
+	void ent;
+	int ent_pos;
+	int target_pos;
+	int range_min;
+	int range_max;
+	int animation;
+
+	// Acting entity.
+	ent = dc_target_get_entity();
+
+	// Must have a target.
+	if (typeof(target) != openborconstant("VT_PTR"))
+	{
+		//target = dc_target_get_target();
+		return 0;
+	}
+
+	// Get animation and verify entity has it.
+	animation = dc_target_get_animation();
+
+	if (!getentityproperty(ent, "animvalid", animation))
+	{
+		return 0;
+	}
+
+	// Get positions.
+	ent_pos = getentityproperty(ent, "z");
+	target_pos = getentityproperty(target, "z");
+
+	// Get ranges.
+	range_min = getentityproperty(ent, "range", "zmin", animation);
+	range_max = getentityproperty(ent, "range", "zmin", animation);
+
+	// Subtract entity position from target position.
 	target_pos -= ent_pos;
 
 	// Return true if final target location is
