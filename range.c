@@ -76,15 +76,7 @@ int dc_target_check_range_target_x(void target)
 // check_range_target_y() function.
 int dc_target_check_range_target_y(void target)
 {
-	void ent;
-	int ent_pos;
 	int target_pos;
-	int range_min;
-	int range_max;
-	int animation;
-
-	// Acting entity.
-	ent = dc_target_get_entity();
 
 	// Must have a target.
 	if (typeof(target) != openborconstant("VT_PTR"))
@@ -93,29 +85,12 @@ int dc_target_check_range_target_y(void target)
 		return 0;
 	}
 
-	// Get animation and verify entity has it.
-	animation = dc_target_get_animation();
-
-	if (!getentityproperty(ent, "animvalid", animation))
-	{
-		return 0;
-	}
-
 	// Get positions.
-	ent_pos = getentityproperty(ent, "y");
 	target_pos = getentityproperty(target, "y");
 
-	// Get ranges.
-	range_min = getentityproperty(ent, "range", "amin", animation);
-	range_max = getentityproperty(ent, "range", "amin", animation);
-
-	// Subtract entity Y position from target position.
-	target_pos -= ent_pos;
-
-	// Return true if final target location is
-	// within range min and max.
-	return (target_pos >= range_min
-		&& target_pos <= range_max);
+	//  Run the range function using target's
+	// position as target position.
+	return dc_target_check_position_in_range_y(target_pos);
 }
 
 // Caskey, Damon V.
@@ -310,32 +285,21 @@ int dc_target_check_position_in_range_y()
 		return 0;
 	}
 
-	// Get target position.
-	pos_target = dc_target_get_offset_y();
+	// Get positions.
+	ent_pos = getentityproperty(ent, "y");
+	target_pos = getentityproperty(target, "y");
 
-	// Get ranges. We're doing the range check
-	// manually, so our range needs to combine
-	// range settings from an animation with
-	// the acting entity's current position.
-	range_min = pos_current + getentityproperty(ent, "range", "amin", animation);
-	range_max = pos_current + getentityproperty(ent, "range", "amax", animation);
+	// Get ranges.
+	range_min = getentityproperty(ent, "range", "amin", animation);
+	range_max = getentityproperty(ent, "range", "amin", animation);
 
-	// If the target position is less than 
-	// the minimum or greater than the maximum,
-	// return false immediately.
-	if (pos_target < range_min)
-	{
-		return 0;
-	}
+	// Subtract entity Y position from target position.
+	target_pos -= ent_pos;
 
-	if (pos_target > range_max)
-	{
-		return 0;
-	}
-
-	// If we passed all checks, then
-	// we can resturn a true result.
-	return 1;
+	// Return true if final target location is
+	// within range min and max.
+	return (target_pos >= range_min
+		&& target_pos <= range_max);
 }
 
 // Caskey, Damon V.
