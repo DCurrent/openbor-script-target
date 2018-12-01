@@ -47,7 +47,7 @@ int dc_target_find_obstacle_x() {
 		// it's not a valid target, so get out of 
 		// this loop iteration.
 
-		if (!dc_target_check_position_in_range_z())
+		if (!dc_target_check_range_target_z(target))
 		{
 			continue;
 		}
