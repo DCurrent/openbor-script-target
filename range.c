@@ -60,7 +60,7 @@ int dc_target_check_range_target_x(void target)
 
 	//  Run the range function using target's
 	// position as target position.
-	return dc_target_check_range_target_x(target_pos);
+	return dc_target_check_position_in_range_x(target_pos);
 }
 
 // Caskey, Damon V.
