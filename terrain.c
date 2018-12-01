@@ -6,7 +6,8 @@
 #import "data/scripts/dc_target/range.c"
 
 // Returns x position of first obstacle in range of animation.
-int dc_target_find_obstacle_x() {
+int dc_target_find_obstacle() 
+{
 
 	int     result;			// Final result.
 	void	ent;			// Acting entity.
@@ -63,9 +64,9 @@ int dc_target_find_obstacle_x() {
 		}
 
 		// If we'e made it this far, we've found a valid
-		// target. Use the current target x position as
-		// a result and exit loop.
-		result = getentityproperty(target, "x");
+		// target. Use current target as result and
+		// exit loop.
+		result = target;
 		break;
 	}
 
