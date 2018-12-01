@@ -92,21 +92,19 @@ int dc_target_find_obstacle()
 // 
 // Get X position of screen edge if found within X range of
 // animation.
-int dc_target_find_edge_x(int animation)
+int dc_target_find_edge_x()
 {
 	void ent;		// Acting entity.
 	int result;		// Final result.
 	int scroll_x;	// Screen scroll position.
 	int far_x;		// Location of far screen edge.
+	int animation;	//Acting animation.
 
 	// Acting entity.
 	ent = dc_target_get_entity();
 
-	// Verify animation provided is valid.
-	if (!getentityproperty(ent, "animvalid", animation))
-	{
-		return result;
-	}
+	// Acting animation
+	animation = dc_target_get_animation();
 
 	// Get current scroll position, far edge position
 	// and entity x position.
@@ -116,12 +114,6 @@ int dc_target_find_edge_x(int animation)
 	// Is scroll X in range of near screen position? Then
 	// we can scroll X. Just in case scroll X is in range
 	// but still 0, we'll return 1 instead.
-
-	// Set up dc_target to use same instance, entity,
-	// and target animation.
-	dc_target_set_instance(dc_target_get_instance());
-	dc_target_set_entity(dc_target_get_entity());
-	dc_target_set_animation(animation);
 
 	// Use scroll X for the target position.
 	dc_target_set_offset_x(scroll_x);
