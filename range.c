@@ -5,6 +5,35 @@
 #import "data/scripts/dc_target/offset.c"
 
 // Caskey, Damon V.
+// 2018-12-01
+//
+// Find total distance from acting enity to
+// target.
+float dc_target_find_total_distance_to_target(void target)
+{
+	float result;
+	void ent;
+
+	ent = dc_target_get_entity();
+
+	if (typeof(target) != openborconstant("VT_PTR"))
+	{
+		//target = dc_target_get_target();
+		return 0.0;
+	}
+
+	// Start with 0, and add the difference between acting
+	// entity and target for each axis.
+	result = 0.0;
+	result += dc_math_difference_float(getentityproperty(target, "x"), getentityproperty(ent, "x"));
+	result += dc_math_difference_float(getentityproperty(target, "y"), getentityproperty(ent, "y"));
+	result += dc_math_difference_float(getentityproperty(target, "z"), getentityproperty(ent, "z"));
+
+	// Return final result.
+	return result;
+}
+
+// Caskey, Damon V.
 // 2018-11-30
 //
 // Return true if:
