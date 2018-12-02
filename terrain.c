@@ -98,7 +98,7 @@ int dc_target_find_edge_x()
 	int result;		// Final result.
 	int scroll_x;	// Screen scroll position.
 	int far_x;		// Location of far screen edge.
-	int animation;	//Acting animation.
+	int animation;	// Acting animation.
 
 	// Acting entity.
 	ent = dc_target_get_entity();
@@ -115,11 +115,8 @@ int dc_target_find_edge_x()
 	// we can scroll X. Just in case scroll X is in range
 	// but still 0, we'll return 1 instead.
 
-	// Use scroll X for the target position.
-	dc_target_set_offset_x(scroll_x);
-
 	// Run the check and set result accordingly.
-	if (dc_target_check_position_in_range_x())
+	if (dc_target_check_position_in_range_x(scroll_x))
 	{
 		if (scroll_x)
 		{
@@ -134,10 +131,7 @@ int dc_target_find_edge_x()
 	}
 
 	// Same as above, but this time for the far edge of screen.
-
-	dc_target_set_offset_x(far_x);
-
-	if (dc_target_check_position_in_range_x())
+	if (dc_target_check_position_in_range_x(far_x))
 	{
 		if (far_x)
 		{
@@ -151,6 +145,6 @@ int dc_target_find_edge_x()
 		return result;
 	}
 
-	// Return result (if we made it this far - it's false).
+	// If we got this far, return the default (false).
 	return result;
 }
