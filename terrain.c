@@ -52,17 +52,17 @@ int dc_target_find_obstacle()
 		// it's not a valid target, so get out of 
 		// this loop iteration.
 
-		if (!dc_target_check_range_target_z(target))
+		if (!dc_target_check_target_in_range_z(target))
 		{
 			continue;
 		}
 
-		if (!dc_target_check_range_target_x(target))
+		if (!dc_target_check_target_in_range_x(target))
 		{
 			continue;
 		}
 
-		if (!dc_target_check_range_target_y(target))
+		if (!dc_target_check_target_in_range_y(target))
 		{
 			continue;
 		}
