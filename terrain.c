@@ -148,3 +148,50 @@ int dc_target_find_edge_x()
 	// If we got this far, return the default (false).
 	return result;
 }
+
+// Caskey, Damon V.
+// 2018-13-03
+//
+// Returns index of nearest wall in animation range, 
+// or DC_HANSBURG_NO_WALL if none found.
+int dc_target_find_wall(int animation)
+{
+	void ent;		// Acting entity.
+	int i;			// Loop cursor.
+	int wall_count;	// Number of walls in level.
+
+
+	// Get acting entity.
+	ent = dc_target_get_entity();
+
+	// Use library animation if no animation paramater given.
+	if (typeof(animation) != openborconstant("VT_INTEGER"))
+	{
+		animation = dc_target_get_animation();
+	}
+
+	// Loop through the level's wall collection.
+	
+	wall_count = openborvariant("numwalls");
+
+	for (i = 0; i < wall_count; i++)
+	{
+		// Verify the wall is within range of animation.
+		// If not, then exit this iteration of the loop.
+
+		if (!dc_target_check_wall_in_range_x(i, animation))
+		{
+			continue;
+		}
+
+		if (!dc_target_check_wall_in_range_y(i, animation))
+		{
+			continue;
+		}
+
+		if (!dc_target_check_wall_in_range_z(i, animation))
+		{
+			continue;
+		}
+	}
+}
