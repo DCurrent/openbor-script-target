@@ -294,3 +294,218 @@ int dc_target_check_position_in_range_z(float target_pos)
 	return (target_pos >= range_min
 		&& target_pos <= range_max);
 }
+
+// Caskey, Damon V.
+// 2018-12-03
+//
+// Return true if wall index is within range of animation
+// range (for active entity).
+int dc_target_check_wall_in_range_x(int wall, int animation)
+{
+	void ent;
+
+	// Positions.
+	int direction;
+	float pos_x;
+	float pos_z;
+
+	// Wall position/dimensions.
+	float x;
+	float z;
+	float depth;
+	float lower_left;
+	float lower_right;
+	float upper_left;
+	float upper_right;
+
+	// Wall calculations.
+	float coefficient_left;
+	float coefficient_right;
+	float test_left;
+	float test_right;
+
+	// Ranges.
+	float range_x_min;
+	float range_x_max;
+	
+	// Get acting entity and positions.
+	ent = dc_target_get_entity();
+	direction = getentityproperty(ent, "direction");
+	pos_x = getentityproperty(ent, "x");
+	pos_z = getentityproperty(ent, "z");
+
+	// Use library animation if no animation paramater given.
+	if (typeof(animation) != openborconstant("VT_INTEGER"))
+	{
+		animation = dc_target_get_animation();
+	}
+
+	// Get X ranges.
+	range_x_min = getentityproperty(ent, "range", "xmin", animation);
+	range_x_max = getentityproperty(ent, "range", "xmax", animation);
+
+	// Combine the X range settings with current position. 
+	// If facing left, we'll need subtract for X. If facing 
+	// right, then we'll add.
+	if (direction == openborconstant("DIRECTION_LEFT"))
+	{
+		range_x_min = pos_x - range_x_min;
+		range_x_max = pos_x - range_x_max;
+	}
+	else if (direction == openborconstant("DIRECTION_RIGHT"))
+	{
+		range_x_min += pos_x;
+		range_x_max += pos_x;
+	}
+
+	// Get wall dimensions.
+	x = getlevelproperty("wall", wall, "x");
+	z = getlevelproperty("wall", wall, "z");
+	lower_left = getlevelproperty("wall", wall, "lowerleft");
+	lower_right = getlevelproperty("wall", wall, "lowerright");
+	upper_left = getlevelproperty("wall", wall, "upperleft");
+	upper_right = getlevelproperty("wall", wall, "upperright");
+
+	// This is a bit more complicated since wall bases 
+	// are paralellograms and we must account for entity 
+	// direction. We'll use the logic from openbor's 
+	// testwall(). Calculate the coef relative to the 
+	// bottom left point of wall. 
+	//
+	// 1. Figure out how far the entity is from the bottom of the 
+	// platform.
+	//
+	// 2. Multiply result by the difference of the bottom left 
+	// point and the top left point divided by depth of the platform.
+	//
+	// Repeat for the right side of wall.
+	//
+	// We can then use the coefs to find out if our ranges fall within
+	// the wall area.
+
+	coefficient_left	= (z - pos_z) * ((upper_left - lower_left) / depth);
+	coefficient_right	= (z - pos_z) * ((upper_right - lower_right) / depth);
+
+	// Combine wall position and lower points with
+	// coefficients to get final test values we can 
+	// compare to range.
+	test_left	= x + lower_left + coefficient_left;
+	test_right = x + lower_right + coefficient_right;
+
+	// Test locations within horizontal range?
+	if(range_x_min <= test_left && range_x_max >= test_right)
+	{
+		return 1;
+	}
+
+	// If we got here, return false.
+	return 0;
+}
+
+// Caskey, Damon V.
+// 2018-12-03
+//
+// Return true if wall index is within range of animation
+// range (for active entity).
+int dc_target_check_wall_in_range_y(int wall, int animation)
+{
+	void ent;
+
+	// Positions.
+	float pos_y;
+
+	// Wall position/dimensions.
+	float height;
+
+	// Ranges.
+	float range_y_min;
+	float range_y_max;
+
+	// Get acting entity and positions.
+	ent = dc_target_get_entity();
+	pos_y = getentityproperty(ent, "y");
+
+	// Use library animation if no animation paramater given.
+	if (typeof(animation) != openborconstant("VT_INTEGER"))
+	{
+		animation = dc_target_get_animation();
+	}
+
+	// Get wall height.
+	height = getlevelproperty("wall", wall, "height");
+
+	// Get vertical ranges.
+	range_y_min = getentityproperty(ent, "range", "amin", animation);
+	range_y_max = getentityproperty(ent, "range", "amax", animation);
+
+	// Add entity position to Y range.
+	range_y_min += pos_y;
+	range_y_max += pos_y;
+
+	// Base to wall height anywhere within vertical range?
+	if (range_y_min <= height && range_y_max >= 0)
+	{
+		return 1;
+	}
+
+	// If we got here, return false.
+	return 0;
+}
+
+// Caskey, Damon V.
+// 2018-12-03
+//
+// Return true if wall index is within range of animation
+// range (for active entity).
+int dc_target_check_wall_in_range_z(int wall, int animation)
+{
+	void ent;
+
+	// Positions.
+	float pos_z;
+
+	// Wall position/dimensions.
+	float z;
+	float depth;
+
+	// Wall calculations.
+	float test_depth;
+
+	// Ranges
+	float range_z_min;
+	float range_z_max;
+
+	// Get acting entity and positions.
+	ent = dc_target_get_entity();
+	pos_z = getentityproperty(ent, "z");
+
+	// Use library animation if no animation paramater given.
+	if (typeof(animation) != openborconstant("VT_INTEGER"))
+	{
+		animation = dc_target_get_animation();
+	}
+
+	// Get wall Z dimensions.
+	z = getlevelproperty("wall", wall, "z");
+	depth = getlevelproperty("wall", wall, "depth");
+
+	// Get Z ranges.
+	range_z_min = getentityproperty(ent, "range", "zmin", animation);
+	range_z_max = getentityproperty(ent, "range", "zmax", animation);
+
+	// Add entity position to Z range.
+	range_z_min += pos_z;
+	range_z_max += pos_z;
+
+	// Get final test depth.
+	test_depth = z + depth;
+	
+	// Z position to test depth anywhere within Z range?
+	if (range_z_min <= z && range_z_max >= test_depth)
+	{
+		return 1;
+	}
+
+	// If we got here, return false.
+	return 0;
+}
