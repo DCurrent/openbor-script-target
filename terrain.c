@@ -156,9 +156,12 @@ int dc_target_find_edge_x()
 // or DC_HANSBURG_NO_WALL if none found.
 int dc_target_find_wall(int animation)
 {
-	void ent;		// Acting entity.
-	int i;			// Loop cursor.
-	int wall_count;	// Number of walls in level.
+	void ent;			// Acting entity.
+	int i;				// Loop cursor.
+	int wall_count;		// Number of walls in level.
+	
+	float edge_left;
+	float edge_right;
 
 	// Get acting entity.
 	ent = dc_target_get_entity();
@@ -181,5 +184,10 @@ int dc_target_find_wall(int animation)
 		{
 			continue;
 		}
+
+		edge_left	= dc_target_find_wall_left_edge_x(i);
+		edge_right	= dc_target_find_wall_right_edge_x(i);
+
+		
 	}
 }
