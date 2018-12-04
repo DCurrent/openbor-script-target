@@ -160,7 +160,6 @@ int dc_target_find_wall(int animation)
 	int i;			// Loop cursor.
 	int wall_count;	// Number of walls in level.
 
-
 	// Get acting entity.
 	ent = dc_target_get_entity();
 
@@ -178,18 +177,7 @@ int dc_target_find_wall(int animation)
 	{
 		// Verify the wall is within range of animation.
 		// If not, then exit this iteration of the loop.
-
-		if (!dc_target_check_wall_in_range_x(i, animation))
-		{
-			continue;
-		}
-
-		if (!dc_target_check_wall_in_range_y(i, animation))
-		{
-			continue;
-		}
-
-		if (!dc_target_check_wall_in_range_z(i, animation))
+		if (!dc_target_check_wall_in_range_all(i, animation))
 		{
 			continue;
 		}
