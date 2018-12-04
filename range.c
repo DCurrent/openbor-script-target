@@ -70,11 +70,21 @@ int dc_target_check_target_in_range_x(void target)
 // within animation's X range.
 int dc_target_check_position_in_range_x(float target_pos)
 {
-	void ent;			// Acting entity.
-	int range_min;		// Minimum range.
-	int range_max;		// Maximum range.
+	dc_target_check_range_in_range(target_pos, target_pos);
+}
+
+// Caskey, Damon V.
+// 2018-11-29 (breakdown of orginal from 2017-03-18)
+//
+// Return true if any range of min/max falls within
+// range of acting animation for acting entity.
+int dc_target_check_range_in_range_x(float min, float max)
+{
+	void ent;		// Acting entity.
+	int range_min;	// Minimum range.
+	int range_max;	// Maximum range.
 	float ent_pos;	// Current entity position.
-	int animation;		// Animation to use.
+	int animation;	// Animation to use.
 
 	// Get action ent and position.
 	ent = dc_target_get_entity();
@@ -95,29 +105,26 @@ int dc_target_check_position_in_range_x(float target_pos)
 		target_pos = dc_target_get_offset_x();
 	}
 
-	// Return true if final target location is
-	// within range X min and max. Range comparison
-	// is reversed when entity faces left.
+	// Get range settings.
+	range_min = getentityproperty(ent, "range", "xmin", animation);
+	range_max = getentityproperty(ent, "range", "xmax", animation);
+
+	// Add animation range to entity X position
+	// for final X range coordinates if facing
+	// right. Subject if facing left.
 	if (getentityproperty(ent, "direction") == openborconstant("DIRECTION_RIGHT"))
 	{
-		// Add animation range to entity X position
-		// for final X range coordinates.
-		range_min = ent_pos + getentityproperty(ent, "range", "xmin", animation);
-		range_max = ent_pos + getentityproperty(ent, "range", "xmin", animation);
-
-		return (target_pos >= range_min
-			&& target_pos <= range_max);
+		range_min = ent_pos + range_min;
+		range_max = ent_pos + range_max;
 	}
 	else
 	{
-		// Subtract animation range from entity X
-		// position for final X range coordinates.
-		range_min = ent_pos - getentityproperty(ent, "range", "xmin", animation);
-		range_max = ent_pos - getentityproperty(ent, "range", "xmin", animation);
-
-		return (target_pos <= range_min
-			&& target_pos >= range_max);
+		range_min = ent_pos - range_min;
+		range_max = ent_pos - range_max;		
 	}
+
+	// Return true if ranges overlap, false otherwise.
+	return (range_min <= max && range_max >= min);
 }
 
 // Caskey, Damon V.
@@ -298,6 +305,134 @@ int dc_target_check_position_in_range_z(float target_pos)
 // Caskey, Damon V.
 // 2018-12-03
 //
+// Return the absolute horizontal position of a wall's
+// left edge at a given Z axis.
+//
+// wall: Wall index.
+// Z: Z posiiton. If omitted, acting entity's current Z position used.
+float dc_target_find_wall_left_edge_x(int wall, float z)
+{
+	void ent;
+	float pos_z;
+	float x;
+	float z;
+	float depth;
+	float lower_corner;
+	float upper_corner;
+	float coefficient;
+
+	// If no valid Z position is given, use acting entity's
+	// current Z position.
+	if (typeof(z) != openborconstant("VT_DECIMAL"))
+	{
+		// Get acting entity and Z position.
+		ent = dc_target_get_entity();
+		pos_z = getentityproperty(ent, "z");
+	}	
+
+	// Get wall dimensions.
+	x = getlevelproperty("wall", wall, "x");
+	z = getlevelproperty("wall", wall, "z");
+	lower_corner = getlevelproperty("wall", wall, "lowerleft");
+	upper_corner = getlevelproperty("wall", wall, "upperleft");
+
+	// Walls are rectangular parallelepipeds (think cube with a parallelogram
+	// as its base), so accurately calculating where the wall edge is along
+	// a given lateral position can be a little complex. We'll take 
+	// some cues from OpenBOR's internal testwall() function.
+	//
+	// 1. Get distance between the entity's and wall's Z positions. 
+	//
+	// 2. Multiply distance by the difference of the bottom left 
+	// point and the top left point divided by depth of the platform.
+	//
+	// Assuming the entity's Z position is exactly halfway between the 
+	// wall Z position and depth, this will produce a horizontal value
+	// exacty halfway between the upper left and lower left offsets.
+	// This value is our coefficient.
+	//
+	// Example:
+	// 
+	// Entity Z:	120
+	// X Position:	500
+	// Z Position:	200
+	// Depth:		40
+	// Lower Left:	0
+	// Upper Left:	10
+	// Coefficient:	5
+	//
+	// We then add the coefficient to wall's X position and the
+	// lower left offset to get an absolute horizontal position 
+	// of the wall's left edge. In our example above, the wall's 
+	// edge is at 505.
+	//
+	// Because we include the entity's Z position when we calculate
+	// the coefficient, as the entity moves along Z axis the coefficient 
+	// changes accordingly,  This gives us a precise X location 
+	// of the wall's edge relative to entity's Z position. In the
+	// example above, if our entity moves to Z 170, the coefficient
+	// is now 7.5, giving us an absolute wall edge of 507.5.
+
+	// Get our coefficients.
+	coefficient = (z - pos_z) * ((upper_corner - lower_corner) / depth);
+	
+	// Add position and the lower corner to get an absolute
+	// position of the walls edge at Z axis.
+	result = x + lower_corner + coefficient;
+
+	return result;
+}
+
+// Caskey, Damon V.
+// 2018-12-03
+//
+// Return the absolute horizontal position of a wall's
+// right edge at a given Z axis.
+//
+// wall: Wall index.
+// Z: Z posiiton. If omitted, acting entity's current Z position used.
+float dc_target_find_wall_right_edge_x(int wall, float z)
+{
+	void ent;
+	float pos_z;
+	float x;
+	float z;
+	float depth;
+	float lower_corner;
+	float upper_corner;
+	float coefficient;
+
+	// If no valid Z position is given, use acting entity's
+	// current Z position.
+	if (typeof(z) != openborconstant("VT_DECIMAL"))
+	{
+		// Get acting entity and Z position.
+		ent = dc_target_get_entity();
+		pos_z = getentityproperty(ent, "z");
+	}
+
+	// Get wall dimensions.
+	x = getlevelproperty("wall", wall, "x");
+	z = getlevelproperty("wall", wall, "z");
+	lower_corner = getlevelproperty("wall", wall, "lowerright");
+	upper_corner = getlevelproperty("wall", wall, "upperright");
+
+	// See dc_target_find_wall_left_edge_x() for explanation of 
+	// the coefficient.
+
+	// Get our coefficients.
+	coefficient = (z - pos_z) * ((upper_corner - lower_corner) / depth);
+
+	// Add position and the lower corner to get an absolute
+	// position of the walls edge at Z axis.
+	result = x + lower_corner + coefficient;
+
+	return result;
+}
+
+// Caskey, Damon V.
+// 2018-12-03
+//
 // Return true if wall index is within range of animation
 // range (for active entity).
 int dc_target_check_wall_in_range_all(int wall, int animation)
@@ -338,18 +473,7 @@ int dc_target_check_wall_in_range_x(int wall, int animation)
 	float pos_x;
 	float pos_z;
 
-	// Wall position/dimensions.
-	float x;
-	float z;
-	float depth;
-	float lower_left;
-	float lower_right;
-	float upper_left;
-	float upper_right;
-
 	// Wall calculations.
-	float coefficient_left;
-	float coefficient_right;
 	float test_left;
 	float test_right;
 
@@ -386,64 +510,10 @@ int dc_target_check_wall_in_range_x(int wall, int animation)
 		range_x_min += pos_x;
 		range_x_max += pos_x;
 	}
-
-	// Get wall dimensions.
-	x			= getlevelproperty("wall", wall, "x");
-	z			= getlevelproperty("wall", wall, "z");
-	lower_left	= getlevelproperty("wall", wall, "lowerleft");
-	lower_right	= getlevelproperty("wall", wall, "lowerright");
-	upper_left	= getlevelproperty("wall", wall, "upperleft");
-	upper_right	= getlevelproperty("wall", wall, "upperright");
-
-	// Walls are rectangular parallelepipeds (think cube with a parallelogram
-	// as its base), so accurately testing if the wall edge is in horizontal 
-	// range will be a bit more complex than other axis ranges. We'll take 
-	// some cues from OpenBOR's internal testwall() function.
-	//
-	// 1. Get distance between the entity's and wall's Z positions. 
-	//
-	// 2. Multiply distance by the difference of the bottom left 
-	// point and the top left point divided by depth of the platform.
-	//
-	// Assuming the entity's Z position is exactly halfway between the 
-	// wall Z position and depth, this will produce a horizontal value
-	// exacty halfway between the upper left and lower left offsets.
-	// This value is our coefficient.
-	//
-	// Example:
-	// 
-	// Entity Z:	120
-	// X Position:	500
-	// Z Position:	200
-	// Depth:		40
-	// Lower Left:	0
-	// Upper Left:	10
-	// Coefficient:	5
-	//
-	// We then add the coefficient to wall's X position and the
-	// lower left offset to get an absolute horizontal position 
-	// of the wall's left edge. In our example above, the wall's 
-	// edge is at 505.
-	//
-	// Because we include the entity's Z position when we calculate
-	// the coefficient, as the entity moves along Z axis the coefficient 
-	// changes accordingly,  This gives us a precise X location 
-	// of the wall's edge relative to entity's Z position. In the
-	// example above, if our entity moves to Z 170, the coefficient
-	// is now 7.5, giving us an absolute wall edge of 507.5.
-	//
-	// Once we have the left side, we can repeat the same process
-	// to get the right side. 
-
-	// Get our coefficients.
-	coefficient_left	= (z - pos_z) * ((upper_left - lower_left) / depth);
-	coefficient_right	= (z - pos_z) * ((upper_right - lower_right) / depth);
-
-	// Combine wall position and lower points with
-	// coefficients to get absolute wall edge positions
-	// we can test against range.
-	test_left	= x + lower_left + coefficient_left;
-	test_right	= x + lower_right + coefficient_right;
+	
+	// get wall edge positions.
+	test_left	= dc_target_find_wall_left_edge_x(wall, pos_z);
+	test_right	= dc_target_find_wall_right_edge_x(wall, pos_z);
 
 	// Test locations within horizontal range?
 	if(range_x_min <= test_left && range_x_max >= test_right)
