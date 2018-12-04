@@ -70,7 +70,14 @@ int dc_target_check_target_in_range_x(void target)
 // within animation's X range.
 int dc_target_check_position_in_range_x(float target_pos)
 {
-	dc_target_check_range_in_range(target_pos, target_pos);
+	// Use library offset if no target position provided.
+	if (typeof(target_pos) != openborconstant("VT_DECIMAL"))
+	{
+		// Get target position.
+		target_pos = dc_target_get_offset_x();
+	}
+
+	dc_target_check_range_in_range_x(target_pos, target_pos);
 }
 
 // Caskey, Damon V.
@@ -97,14 +104,7 @@ int dc_target_check_range_in_range_x(float min, float max)
 	{
 		return 0;
 	}
-
-	// Use library offset if no target position provided.
-	if (typeof(target_pos) != openborconstant("VT_DECIMAL"))
-	{
-		// Get target position.
-		target_pos = dc_target_get_offset_x();
-	}
-
+	
 	// Get range settings.
 	range_min = getentityproperty(ent, "range", "xmin", animation);
 	range_max = getentityproperty(ent, "range", "xmax", animation);
@@ -320,6 +320,7 @@ float dc_target_find_wall_left_edge_x(int wall, float z)
 	float lower_corner;
 	float upper_corner;
 	float coefficient;
+	float result;
 
 	// If no valid Z position is given, use acting entity's
 	// current Z position.
@@ -401,6 +402,7 @@ float dc_target_find_wall_right_edge_x(int wall, float z)
 	float lower_corner;
 	float upper_corner;
 	float coefficient;
+	float result;
 
 	// If no valid Z position is given, use acting entity's
 	// current Z position.
