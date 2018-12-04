@@ -41,9 +41,6 @@ float dc_target_find_total_distance_to_target(void target)
 // A) Acting entity has acing animation.
 // B) Target entity is within acting
 // animation range.
-//
-// Logic is more or less a copy of OpenBOR's own
-// check_range_target_x() function.
 int dc_target_check_target_in_range_x(void target)
 {
 	int target_pos;
@@ -81,7 +78,7 @@ int dc_target_check_position_in_range_x(float target_pos)
 }
 
 // Caskey, Damon V.
-// 2018-11-29 (breakdown of orginal from 2017-03-18)
+// 2018-12-04
 //
 // Return true if any range of min/max falls within
 // range of acting animation for acting entity.
@@ -135,9 +132,6 @@ int dc_target_check_range_in_range_x(float min, float max)
 // A) Acting entity has acing animation.
 // B) Target entity is within acting
 // animation range.
-//
-// Logic is more or less a copy of OpenBOR's own
-// check_range_target_y() function.
 int dc_target_check_target_in_range_y(void target)
 {
 	int target_pos;
@@ -157,12 +151,21 @@ int dc_target_check_target_in_range_y(void target)
 	return dc_target_check_position_in_range_y(target_pos);
 }
 
+int dc_target_check_position_in_range_y(float target_pos)
+{
+	// Use library offset if target pos argument not given.
+	if (typeof(target_pos) != openborconstant("VT_DECIMAL"))
+	{
+		target_pos = dc_target_get_offset_y();
+	}
+}
+
 // Caskey, Damon V.
 // 2018-11-29 (breakdown of orginal from 2017-03-18)
 //
-// Return true if target position is 
-// within animation's Y range.
-int dc_target_check_position_in_range_y(float target_pos)
+// Return true if any range of min/max falls within
+// range of acting animation for acting entity.
+int dc_target_check_range_in_range_y(float min, float max)
 {
 	void ent;			// Acting entity.
 	float ent_pos;		// Entity position.
@@ -183,23 +186,19 @@ int dc_target_check_position_in_range_y(float target_pos)
 		return 0;
 	}
 
-	// Use library offset if target pos argument not given.
-	if (typeof(target_pos) != openborconstant("VT_DECIMAL"))
-	{
-		target_pos = dc_target_get_offset_y();
-	}
-
 	// Get ranges.
 	range_min = getentityproperty(ent, "range", "amin", animation);
 	range_max = getentityproperty(ent, "range", "amin", animation);
 
-	// Subtract entity Y position from target position.
-	target_pos -= ent_pos;
+	// Subtract entity Y position from target position. We can then
+	// compare the target locations directly to the range settings.
+	min -= ent_pos;
+	max -= ent_pos;
 
 	// Return true if final target location is
 	// within range min and max.
-	return (target_pos >= range_min
-		&& target_pos <= range_max);
+	// Return true if ranges overlap, false otherwise.
+	return (range_min <= max && range_max >= min);
 }
 
 // Caskey, Damon V.
