@@ -10,7 +10,6 @@
 #define DC_TARGET_BASE_ID		"dctarg"
 
 // Defaults
-#define DC_TARGET_DEFAULT_INSTANCE		0
 #define DC_TARGET_DEFAULT_ANIMATION		openborconstant("ANI_IDLE")
 #define DC_TARGET_DEFAULT_ENT			getlocalvar("self")
 #define DC_TARGET_DEFAULT_OFFSET_BASE	0
