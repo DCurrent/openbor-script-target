@@ -10,7 +10,7 @@ int dc_target_get_animation()
 
 	// Concatenate instance with var key
 	// to get a finished variable id.
-	id = dc_target_get_instance() + DC_TARGET_VAR_KEY_ANIMATION;
+	id = dc_target_get_instance() + DC_TARGET_MEMBER_ANIMATION;
 
 	// Get current value.
 	result = getlocalvar(id);
@@ -32,7 +32,7 @@ void dc_target_set_animation(int value)
 
 	// Concatenate instance with var key
 	// to get a finished variable id.
-	id = dc_target_get_instance() + DC_TARGET_VAR_KEY_ANIMATION;
+	id = dc_target_get_instance() + DC_TARGET_MEMBER_ANIMATION;
 
 	// If the value we intend to set is
 	// same as default, then just make sure

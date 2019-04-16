@@ -9,7 +9,7 @@ void dc_target_get_entity()
 
 	// Concatenate instance with var key
 	// to get a finished variable id.
-	id = dc_target_get_instance() + DC_TARGET_VAR_KEY_ENT;
+	id = dc_target_get_instance() + DC_TARGET_MEMBER_ENT;
 
 	// Get current value.
 	result = getlocalvar(id);
@@ -32,7 +32,7 @@ void dc_target_set_entity(void value)
 
 	// Concatenate instance with var key
 	// to get a finished variable id.
-	id = dc_target_get_instance() + DC_TARGET_VAR_KEY_ENT;
+	id = dc_target_get_instance() + DC_TARGET_MEMBER_ENT;
 
 	// If the value we intend to set is
 	// same as default, then just make sure

@@ -8,7 +8,7 @@ int dc_target_get_offset_base()
 
 	// Concatenate instance with var key
 	// to get a finished variable id.
-	id = dc_target_get_instance() + DC_TARGET_VAR_KEY_OFFSET_BASE;
+	id = dc_target_get_instance() + DC_TARGET_MEMBER_OFFSET_BASE;
 
 	// Get current value.
 	result = getlocalvar(id);
@@ -30,7 +30,7 @@ void dc_target_set_offset_base(int value)
 
 	// Concatenate instance with var key
 	// to get a finished variable id.
-	id = dc_target_get_instance() + DC_TARGET_VAR_KEY_OFFSET_BASE;
+	id = dc_target_get_instance() + DC_TARGET_MEMBER_OFFSET_BASE;
 
 	// If the value we intend to set is
 	// same as default, then just make sure
@@ -54,7 +54,7 @@ int dc_target_get_offset_x()
 
 	// Concatenate instance with var key
 	// to get a finished variable id.
-	id = dc_target_get_instance() + DC_TARGET_VAR_KEY_OFFSET_X;
+	id = dc_target_get_instance() + DC_TARGET_MEMBER_OFFSET_X;
 
 	// Get current value.
 	result = getlocalvar(id);
@@ -76,7 +76,7 @@ void dc_target_set_offset_x(int value)
 
 	// Concatenate instance with var key
 	// to get a finished variable id.
-	id = dc_target_get_instance() + DC_TARGET_VAR_KEY_OFFSET_X;
+	id = dc_target_get_instance() + DC_TARGET_MEMBER_OFFSET_X;
 
 	// If the value we intend to set is
 	// same as default, then just make sure
@@ -100,7 +100,7 @@ int dc_target_get_offset_y()
 
 	// Concatenate instance with var key
 	// to get a finished variable id.
-	id = dc_target_get_instance() + DC_TARGET_VAR_KEY_OFFSET_Y;
+	id = dc_target_get_instance() + DC_TARGET_MEMBER_OFFSET_Y;
 
 	// Get current value.
 	result = getlocalvar(id);
@@ -122,7 +122,7 @@ void dc_target_set_offset_y(int value)
 
 	// Concatenate instance with var key
 	// to get a finished variable id.
-	id = dc_target_get_instance() + DC_TARGET_VAR_KEY_OFFSET_Y;
+	id = dc_target_get_instance() + DC_TARGET_MEMBER_OFFSET_Y;
 
 	// If the value we intend to set is
 	// same as default, then just make sure
@@ -146,7 +146,7 @@ int dc_target_get_offset_z()
 
 	// Concatenate instance with var key
 	// to get a finished variable id.
-	id = dc_target_get_instance() + DC_TARGET_VAR_KEY_OFFSET_Z;
+	id = dc_target_get_instance() + DC_TARGET_MEMBER_OFFSET_Z;
 
 	// Get current value.
 	result = getlocalvar(id);
@@ -168,7 +168,7 @@ void dc_target_set_offset_z(int value)
 
 	// Concatenate instance with var key
 	// to get a finished variable id.
-	id = dc_target_get_instance() + DC_TARGET_VAR_KEY_OFFSET_Z;
+	id = dc_target_get_instance() + DC_TARGET_MEMBER_OFFSET_Z;
 
 	// If the value we intend to set is
 	// same as default, then just make sure
