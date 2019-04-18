@@ -1,5 +1,6 @@
 #include "data/scripts/dc_target/config.h"
 
+#import "data/scripts/dc_target/instance.c"
 
 // Acting entity.
 void dc_target_get_entity()

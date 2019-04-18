@@ -1,5 +1,7 @@
 #include "data/scripts/dc_target/config.h"
 
+#import "data/scripts/dc_target/instance.c"
+
 // Base offset.
 int dc_target_get_offset_base()
 {
