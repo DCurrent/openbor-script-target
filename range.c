@@ -86,7 +86,7 @@ int dc_target_check_range_in_range_x(float min, float max)
 {
 	void ent;		// Acting entity.
 	int range_min;	// Minimum range.
-	int range_max;	// Maximum range.
+	int RANGE_MAX;	// Maximum range.
 	float ent_pos;	// Current entity position.
 	int animation;	// Animation to use.
 
@@ -104,7 +104,7 @@ int dc_target_check_range_in_range_x(float min, float max)
 	
 	// Get range settings.
 	range_min = getentityproperty(ent, "range", "xmin", animation);
-	range_max = getentityproperty(ent, "range", "xmax", animation);
+	RANGE_MAX = getentityproperty(ent, "range", "xmax", animation);
 
 	// Add animation range to entity X position
 	// for final X range coordinates if facing
@@ -112,16 +112,16 @@ int dc_target_check_range_in_range_x(float min, float max)
 	if (getentityproperty(ent, "direction") == openborconstant("DIRECTION_RIGHT"))
 	{
 		range_min = ent_pos + range_min;
-		range_max = ent_pos + range_max;
+		RANGE_MAX = ent_pos + RANGE_MAX;
 	}
 	else
 	{
 		range_min = ent_pos - range_min;
-		range_max = ent_pos - range_max;		
+		RANGE_MAX = ent_pos - RANGE_MAX;		
 	}
 
 	// Return true if ranges overlap, false otherwise.
-	return (range_min <= max && range_max >= min);
+	return (range_min <= max && RANGE_MAX >= min);
 }
 
 // Caskey, Damon V.
@@ -172,7 +172,7 @@ int dc_target_check_range_in_range_y(float min, float max)
 	void ent;			// Acting entity.
 	float ent_pos;		// Entity position.
 	int range_min;		// Minimum range.
-	int range_max;		// Maximum range.
+	int RANGE_MAX;		// Maximum range.
 	float pos_current;	// Current entity position.
 	int animation;		// Animation to use.
 
@@ -190,7 +190,7 @@ int dc_target_check_range_in_range_y(float min, float max)
 
 	// Get ranges.
 	range_min = getentityproperty(ent, "range", "amin", animation);
-	range_max = getentityproperty(ent, "range", "amin", animation);
+	RANGE_MAX = getentityproperty(ent, "range", "amin", animation);
 
 	// Subtract entity Y position from target position. We can then
 	// compare the target locations directly to the range settings.
@@ -200,7 +200,7 @@ int dc_target_check_range_in_range_y(float min, float max)
 	// Return true if final target location is
 	// within range min and max.
 	// Return true if ranges overlap, false otherwise.
-	return (range_min <= max && range_max >= min);
+	return (range_min <= max && RANGE_MAX >= min);
 }
 
 // Caskey, Damon V.
@@ -259,7 +259,7 @@ int dc_target_check_range_in_range_z(float min, float max)
 	void ent;			// Acting entity.
 	float ent_pos;		// Entity position.
 	int range_min;		// Minimum range.
-	int range_max;		// Maximum range.
+	int RANGE_MAX;		// Maximum range.
 	float pos_current;	// Current entity position.
 	int animation;		// Animation to use.
 
@@ -277,7 +277,7 @@ int dc_target_check_range_in_range_z(float min, float max)
 
 	// Get ranges.
 	range_min = getentityproperty(ent, "range", "zmin", animation);
-	range_max = getentityproperty(ent, "range", "zmin", animation);
+	RANGE_MAX = getentityproperty(ent, "range", "zmin", animation);
 
 	// Subtract entity Z position from target position. We can then
 	// compare the target locations directly to the range settings.
@@ -288,7 +288,7 @@ int dc_target_check_range_in_range_z(float min, float max)
 	// Return true if final target location is
 	// within range min and max.
 	// Return true if ranges overlap, false otherwise.
-	return (range_min <= max && range_max >= min);
+	return (range_min <= max && RANGE_MAX >= min);
 }
 
 
