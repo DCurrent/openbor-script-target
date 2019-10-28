@@ -84,11 +84,13 @@ int dc_target_check_position_in_range_x(float target_pos)
 // range of acting animation for acting entity.
 int dc_target_check_range_in_range_x(float min, float max)
 {
-	void ent;		// Acting entity.
-	int range_min;	// Minimum range.
-	int RANGE_MAX;	// Maximum range.
-	float ent_pos;	// Current entity position.
-	int animation;	// Animation to use.
+	void ent;			// Acting entity.
+	int range_min_ani;	// Minimum range, animation.
+	int range_max_ani;	// Minimum range, animation.
+	int range_min;		// Minimum range.
+	int range_max;		// Maximum range.
+	float ent_pos;		// Current entity position.
+	int animation;		// Animation to use.
 
 	// Get action ent and position.
 	ent = dc_target_get_entity();
@@ -103,25 +105,26 @@ int dc_target_check_range_in_range_x(float min, float max)
 	}
 	
 	// Get range settings.
-	range_min = getentityproperty(ent, "range", "xmin", animation);
-	RANGE_MAX = getentityproperty(ent, "range", "xmax", animation);
+	range_min_ani = getentityproperty(ent, "range", "xmin", animation);
+	range_max_ani = getentityproperty(ent, "range", "xmax", animation);
 
 	// Add animation range to entity X position
-	// for final X range coordinates if facing
-	// right. Subject if facing left.
+	// for final X range coordinates. Subtract and
+	// swap min/max when facing left.
 	if (getentityproperty(ent, "direction") == openborconstant("DIRECTION_RIGHT"))
 	{
-		range_min = ent_pos + range_min;
-		RANGE_MAX = ent_pos + RANGE_MAX;
+		range_min = ent_pos + range_min_ani;
+		range_max = ent_pos + range_max_ani;
 	}
 	else
-	{
-		range_min = ent_pos - range_min;
-		RANGE_MAX = ent_pos - RANGE_MAX;		
-	}
+	{		
+		range_min = ent_pos - range_max_ani;
+		range_max = ent_pos - range_min_ani;
+	}	
 
-	// Return true if ranges overlap, false otherwise.
-	return (range_min <= max && RANGE_MAX >= min);
+	int result = (range_min <= max && min <= range_max);	
+
+	return result;
 }
 
 // Caskey, Damon V.
@@ -172,7 +175,7 @@ int dc_target_check_range_in_range_y(float min, float max)
 	void ent;			// Acting entity.
 	float ent_pos;		// Entity position.
 	int range_min;		// Minimum range.
-	int RANGE_MAX;		// Maximum range.
+	int range_max;		// Maximum range.
 	float pos_current;	// Current entity position.
 	int animation;		// Animation to use.
 
@@ -190,7 +193,7 @@ int dc_target_check_range_in_range_y(float min, float max)
 
 	// Get ranges.
 	range_min = getentityproperty(ent, "range", "amin", animation);
-	RANGE_MAX = getentityproperty(ent, "range", "amin", animation);
+	range_max = getentityproperty(ent, "range", "amin", animation);
 
 	// Subtract entity Y position from target position. We can then
 	// compare the target locations directly to the range settings.
@@ -200,7 +203,7 @@ int dc_target_check_range_in_range_y(float min, float max)
 	// Return true if final target location is
 	// within range min and max.
 	// Return true if ranges overlap, false otherwise.
-	return (range_min <= max && RANGE_MAX >= min);
+	return (range_min <= max && min <= range_max);
 }
 
 // Caskey, Damon V.
@@ -259,7 +262,7 @@ int dc_target_check_range_in_range_z(float min, float max)
 	void ent;			// Acting entity.
 	float ent_pos;		// Entity position.
 	int range_min;		// Minimum range.
-	int RANGE_MAX;		// Maximum range.
+	int range_max;		// Maximum range.
 	float pos_current;	// Current entity position.
 	int animation;		// Animation to use.
 
@@ -277,7 +280,7 @@ int dc_target_check_range_in_range_z(float min, float max)
 
 	// Get ranges.
 	range_min = getentityproperty(ent, "range", "zmin", animation);
-	RANGE_MAX = getentityproperty(ent, "range", "zmin", animation);
+	range_max = getentityproperty(ent, "range", "zmin", animation);
 
 	// Subtract entity Z position from target position. We can then
 	// compare the target locations directly to the range settings.
@@ -288,7 +291,7 @@ int dc_target_check_range_in_range_z(float min, float max)
 	// Return true if final target location is
 	// within range min and max.
 	// Return true if ranges overlap, false otherwise.
-	return (range_min <= max && RANGE_MAX >= min);
+	return (range_min <= max && min <= range_max);
 }
 
 
