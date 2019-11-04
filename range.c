@@ -68,13 +68,13 @@ int dc_target_check_target_in_range_x(void target)
 int dc_target_check_position_in_range_x(float target_pos)
 {
 	// Use library offset if no target position provided.
-	if (typeof(target_pos) != openborconstant("VT_DECIMAL"))
+	if (typeof(target_pos) == openborconstant("VT_EMPTY"))
 	{
 		// Get target position.
 		target_pos = dc_target_get_offset_x();
 	}
 
-	dc_target_check_range_in_range_x(target_pos, target_pos);
+	return dc_target_check_range_in_range_x(target_pos, target_pos);
 }
 
 // Caskey, Damon V.
@@ -123,6 +123,16 @@ int dc_target_check_range_in_range_x(float min, float max)
 	}	
 
 	int result = (range_min <= max && min <= range_max);	
+
+	log("\n\n");
+	log("\n dc_target_check_range_in_range_x, ent_pos: " + ent_pos); 
+	log("\n dc_target_check_range_in_range_x, min: " + min);
+	log("\n dc_target_check_range_in_range_x, max: " + max);
+	log("\n dc_target_check_range_in_range_x, range_min_ani: " + range_min_ani);
+	log("\n dc_target_check_range_in_range_x, range_max_ani: " + range_max_ani);
+	log("\n dc_target_check_range_in_range_x, range_min: " + range_min);
+	log("\n dc_target_check_range_in_range_x, range_max: " + range_max);
+	log("\n dc_target_check_range_in_range_x, result: " + result);
 
 	return result;
 }

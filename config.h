@@ -8,6 +8,10 @@
 // be unique vs all other libraries. Try to keep it short.
 #define DC_TARGET_BASE_ID		"dctarg"
 
+// Result flags.
+#define DC_TARGET_NO_WALL_FOUND			-10000
+#define DC_TARGET_WALL_FOUND			1
+
 // Defaults
 #define DC_TARGET_DEFAULT_INSTANCE		0
 #define DC_TARGET_DEFAULT_ANIMATION		openborconstant("ANI_IDLE")
